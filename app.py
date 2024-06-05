@@ -3,11 +3,12 @@ import os
 from pytube import YouTube
 
 app = Flask(__name__)
+
 def download_video_yt(url, path):
     try:
         yt = YouTube(url)
         yt.streams.get_highest_resolution().download(output_path=path)
-        return "Download complete!"
+        return "DESCARGA COMPLETA!"
     except Exception as e:
         return f"ERROR: {e}"
 
@@ -25,5 +26,7 @@ def custom_static(filename):
     return send_from_directory('static', filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+
 
