@@ -1,6 +1,8 @@
+import time
 from flask import Flask, request, render_template, send_from_directory
 import os
 from pytube import YouTube
+from urllib.error import HTTPError
 
 app = Flask(__name__)
 
@@ -9,6 +11,13 @@ def download_video_yt(url, path):
         yt = YouTube(url)
         yt.streams.get_highest_resolution().download(output_path=path)
         return "DESCARGA COMPLETA!"
+    except HTTPError as e:
+        if e.code == 429:  # Error 429: Too Many Requests
+            print("Demasiadas solicitudes. Reintentando en 10 segundos...")
+            time.sleep(10)  # Espera 10 segundos antes de reintentar
+            return download_video_yt(url, path)  # Reintentar la descarga
+        else:
+            return f"ERROR: {e}"
     except Exception as e:
         return f"ERROR: {e}"
 
@@ -28,5 +37,6 @@ def custom_static(filename):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
 
 
