@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>DESCARGAR MUSICA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="background"></div>
+    <div class="content">
+      <h1>DESCARGA TU MUSICA</h1>
+      <form method="post">
+        <label for="url">LINK DE CANCION:</label>
+        <input type="text" id="url" name="url" required><br><br>
+        <label for="path">OPCIONAL:</label>
+        <input type="text" id="path" name="path"><br><br>
+        <button type="submit">DESCARGAR</button>
+      </form>
+      {% if message %}
+        <p>{{ message }}</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
+
